@@ -153,6 +153,7 @@ ipset_r() {
 fw_rule() {
 	$IPT -N SS_SPEC_WAN_FW
 	$IPT -A SS_SPEC_WAN_FW -d 0.0.0.0/8 -j RETURN
+	$IPT -A SS_SPEC_WAN_FW -d 5.0.0.0/8 -j RETURN
 	$IPT -A SS_SPEC_WAN_FW -d 10.0.0.0/8 -j RETURN
 	$IPT -A SS_SPEC_WAN_FW -d 127.0.0.0/8 -j RETURN
 	$IPT -A SS_SPEC_WAN_FW -d 169.254.0.0/16 -j RETURN
@@ -223,6 +224,7 @@ tp_rule() {
 	$ipt -A SS_SPEC_TPROXY -p udp --dport 80 -j RETURN
 	$ipt -A SS_SPEC_TPROXY -p udp --dport 53 -j RETURN
 	$ipt -A SS_SPEC_TPROXY -p udp -d 0.0.0.0/8 -j RETURN
+	$ipt -A SS_SPEC_TPROXY -p udp -d 5.0.0.0/8 -j RETURN
 	$ipt -A SS_SPEC_TPROXY -p udp -d 10.0.0.0/8 -j RETURN
 	$ipt -A SS_SPEC_TPROXY -p udp -d 127.0.0.0/8 -j RETURN
 	$ipt -A SS_SPEC_TPROXY -p udp -d 169.254.0.0/16 -j RETURN
@@ -277,6 +279,7 @@ get_wan_ip() {
 gen_spec_iplist() {
 	cat <<-EOF
 		0.0.0.0/8
+		5.0.0.0/8
 		10.0.0.0/8
 		100.64.0.0/10
 		127.0.0.0/8
