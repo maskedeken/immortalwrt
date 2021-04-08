@@ -4,6 +4,7 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/image.mk
 
 DEVICE_VARS += ASUS_PRODUCTID ASUS_BUILD_NO ASUS_FW_REV ASUS_EXT_NO
+DEVICE_VARS += NETGEAR_BOARD_ID NETGEAR_REGION
 
 define Build/bcm4908asus
 	$(STAGING_DIR_HOST)/bin/bcm4908asus create -i $@ \
@@ -20,7 +21,7 @@ define Build/bcm4908img
 	cp $(KDIR)/bcm63xx-cfe/$(subst _,$(comma),$(DEVICE_NAME))/cferam.000 $@-bootfs/
 	cp $(IMAGE_KERNEL) $@-bootfs/vmlinux.lz
 
-	$(STAGING_DIR_HOST)/bin/mkfs.jffs2 --pad --little-endian --squash-uids \
+	$(STAGING_DIR_HOST)/bin/mkfs.jffs2 --pad=0x800000 --little-endian --squash-uids \
 		-v -e 128KiB -o $@-bootfs.jffs2 -d $@-bootfs -m none -n
 	$(STAGING_DIR_HOST)/bin/bcm4908img create $@.new -f $@-bootfs.jffs2 \
 		-a 0x20000 -f $@
@@ -66,8 +67,10 @@ define Device/netgear_r8000p
   DEVICE_VENDOR := Netgear
   DEVICE_MODEL := R8000P
   DEVICE_DTS := broadcom/bcm4908/bcm4906-netgear-r8000p
-  IMAGES := bin
-  IMAGE/bin := append-ubi | bcm4908img
+  IMAGES := chk
+  IMAGE/chk := append-ubi | bcm4908img | netgear-chk
+  NETGEAR_BOARD_ID := U12H359T00_NETGEAR
+  NETGEAR_REGION := 1
 endef
 TARGET_DEVICES += netgear_r8000p
 
