@@ -39,7 +39,7 @@ define Build/addpattern
 endef
 
 define Build/append-md5sum-bin
-	$(STAGING_DIR_HOST)/bin/mkhash md5 $@ | sed 's/../\\\\x&/g' |\
+	$(MKHASH) md5 $@ | sed 's/../\\\\x&/g' |\
 		xargs echo -ne >> $@
 endef
 
@@ -159,9 +159,9 @@ define Build/xwrt_csac10-factory
   -[ -f "$@" ] && \
   mkdir -p "$@.tmp" && \
   mv "$@" "$@.tmp/UploadBrush-bin.img" && \
-  binmd5=$$($(STAGING_DIR_HOST)/bin/mkhash md5 "$@.tmp/UploadBrush-bin.img" | head -c32) && \
-  oemmd5=$$(echo -n TB-CSAC10-QCA9563_9886-ROUTE-CSAC10 | $(STAGING_DIR_HOST)/bin/mkhash md5 | head -c32) && \
-  echo -n $${binmd5}$${oemmd5} | $(STAGING_DIR_HOST)/bin/mkhash md5 | head -c32 >"$@.tmp/bin_random_oem.txt" && \
+  binmd5=$$($(MKHASH) md5 "$@.tmp/UploadBrush-bin.img" | head -c32) && \
+  oemmd5=$$(echo -n TB-CSAC10-QCA9563_9886-ROUTE-CSAC10 | $(MKHASH) md5 | head -c32) && \
+  echo -n $${binmd5}$${oemmd5} | $(MKHASH) md5 | head -c32 >"$@.tmp/bin_random_oem.txt" && \
   echo -n V4.4-201910201745 >"$@.tmp/version.txt" && \
   $(TAR) -czf $@.tmp.tgz -C "$@.tmp" UploadBrush-bin.img bin_random_oem.txt version.txt && \
   $(STAGING_DIR_HOST)/bin/openssl aes-256-cbc -md md5 -salt -in $@.tmp.tgz -out "$@" -k QiLunSmartWL && \
@@ -173,9 +173,9 @@ define Build/xwrt_csac05-factory
   -[ -f "$@" ] && \
   mkdir -p "$@.tmp" && \
   mv "$@" "$@.tmp/UploadBrush-bin.img" && \
-  binmd5=$$($(STAGING_DIR_HOST)/bin/mkhash md5 "$@.tmp/UploadBrush-bin.img" | head -c32) && \
-  oemmd5=$$(echo -n TB-CSAC05-QCA9563_9886-ROUTE-CSAC05 | $(STAGING_DIR_HOST)/bin/mkhash md5 | head -c32) && \
-  echo -n $${binmd5}$${oemmd5} | $(STAGING_DIR_HOST)/bin/mkhash md5 | head -c32 >"$@.tmp/bin_random_oem.txt" && \
+  binmd5=$$($(MKHASH) md5 "$@.tmp/UploadBrush-bin.img" | head -c32) && \
+  oemmd5=$$(echo -n TB-CSAC05-QCA9563_9886-ROUTE-CSAC05 | $(MKHASH) md5 | head -c32) && \
+  echo -n $${binmd5}$${oemmd5} | $(MKHASH) md5 | head -c32 >"$@.tmp/bin_random_oem.txt" && \
   echo -n V4.4-201910201745 >"$@.tmp/version.txt" && \
   $(TAR) -czf $@.tmp.tgz -C "$@.tmp" UploadBrush-bin.img bin_random_oem.txt version.txt && \
   $(STAGING_DIR_HOST)/bin/openssl aes-256-cbc -md md5 -salt -in $@.tmp.tgz -out "$@" -k QiLunSmartWL && \
@@ -583,6 +583,16 @@ define Device/comfast_cf-e314n-v2
   IMAGE_SIZE := 7936k
 endef
 TARGET_DEVICES += comfast_cf-e314n-v2
+
+define Device/comfast_cf-e375ac
+  SOC := qca9563
+  DEVICE_VENDOR := COMFAST
+  DEVICE_MODEL := CF-E375AC
+  DEVICE_PACKAGES := kmod-ath10k-ct \
+	ath10k-firmware-qca9888-ct -uboot-envtools
+  IMAGE_SIZE := 16000k
+endef
+TARGET_DEVICES += comfast_cf-e375ac
 
 define Device/comfast_cf-e5
   SOC := qca9531
@@ -2260,6 +2270,15 @@ define Device/yuncore_xd4200
   IMAGE/tftp.bin := $$(IMAGE/sysupgrade.bin) | yuncore-tftp-header-16m
 endef
 TARGET_DEVICES += yuncore_xd4200
+
+define Device/ziking_cpe46b
+  SOC := ar9330
+  DEVICE_VENDOR := ZiKing
+  DEVICE_MODEL := CPE46B
+  IMAGE_SIZE := 8000k
+  DEVICE_PACKAGES := kmod-i2c-gpio
+endef
+TARGET_DEVICES += ziking_cpe46b
 
 define Device/zbtlink_zbt-wd323
   SOC := ar9344
