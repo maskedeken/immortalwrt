@@ -61,6 +61,7 @@ DEFAULT_PACKAGES.tweak:=\
 	luci-app-cpufreq \
 	luci-app-turboacc \
 	luci-app-ssr-plus \
+	luci-app-upnp \
 	luci-app-vlmcsd \
 	luci-compat \
 	luci-lib-base \
