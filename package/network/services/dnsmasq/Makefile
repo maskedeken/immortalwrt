@@ -106,7 +106,7 @@ define Package/dnsmasq-full/config
 		default y
 	config PACKAGE_dnsmasq_full_auth
 		bool "Build with the facility to act as an authoritative DNS server."
-		default y
+		default n
 	config PACKAGE_dnsmasq_full_ipset
 		bool "Build with IPset support."
 		default y
@@ -115,13 +115,13 @@ define Package/dnsmasq-full/config
 		default y
 	config PACKAGE_dnsmasq_full_noid
 		bool "Build with NO_ID. (hide *.bind pseudo domain)"
-		default y
+		default n
 	config PACKAGE_dnsmasq_full_broken_rtc
 		bool "Build with HAVE_BROKEN_RTC."
 		default n
 	config PACKAGE_dnsmasq_full_tftp
 		bool "Build with TFTP server support."
-		default y
+		default n
 	endif
 endef
 
