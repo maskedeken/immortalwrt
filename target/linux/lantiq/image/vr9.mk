@@ -140,6 +140,15 @@ define Device/avm_fritz7360sl
 endef
 TARGET_DEVICES += avm_fritz7360sl
 
+define Device/avm_fritz7360-v2
+  $(Device/AVM)
+  DEVICE_MODEL := FRITZ!Box 7360
+  DEVICE_VARIANT := v2
+  IMAGE_SIZE := 32128k
+  DEVICE_PACKAGES := kmod-ath9k kmod-owl-loader wpad-basic-wolfssl kmod-usb-dwc2
+endef
+TARGET_DEVICES += avm_fritz7360-v2
+
 define Device/avm_fritz7362sl
   $(Device/AVM)
   $(Device/NAND)
@@ -218,7 +227,7 @@ define Device/netgear_dm200
   IMAGE/sysupgrade.bin := append-kernel | \
 	pad-offset 64k 64 | append-uImage-fakehdr filesystem | \
 	pad-offset 64k 64 | append-uImage-fakehdr filesystem | \
-	append-rootfs | pad-rootfs | append-metadata | check-size
+	append-rootfs | pad-rootfs | check-size | append-metadata
   IMAGE/factory.img := $$(IMAGE/sysupgrade.bin) | netgear-dni
   IMAGE_SIZE := 7872k
   NETGEAR_BOARD_ID := DM200
