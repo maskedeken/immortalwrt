@@ -109,26 +109,17 @@ generate_network() {
 		ports="$ifname"
 	}
 
-	[ -n "$ports" -a -z "$bridge" ] && {
-		uci -q batch <<-EOF
-			add network device
-			set network.@device[-1].name='br-$1'
-			set network.@device[-1].type='bridge'
-			set network.@device[-1].macaddr='$macaddr'
-		EOF
-		for port in $ports; do uci add_list network.@device[-1].ports="$port"; done
-		ifname=br-$1
-		type=
-		macaddr=""
+	[ -n "$ports" ] && {
+		type="bridge"
+		ifname="$ports"
 	}
 
 	[ -n "$bridge" ] && {
-		[ -z "$ports" ] && ports="$ifname"
 		if [ -z "$vlan" ]; then
 			bridge_vlan_id=$((bridge_vlan_id + 1))
 			vlan=$bridge_vlan_id
 		fi
-		generate_bridge_vlan $1 $bridge "$ports" $vlan
+		generate_bridge_vlan $1 $bridge "$ifname" $vlan
 		ifname=$bridge.$vlan
 		type=""
 	}
@@ -306,9 +297,9 @@ generate_static_system() {
 		set system.ntp='timeserver'
 		set system.ntp.enabled='1'
 		set system.ntp.enable_server='0'
-		add_list system.ntp.server='ntp1.aliyun.com'
-		add_list system.ntp.server='time1.cloud.tencent.com'
-		add_list system.ntp.server='time.ustc.edu.cn'
+		add_list system.ntp.server='time1.apple.com'
+		add_list system.ntp.server='time1.google.com'
+		add_list system.ntp.server='time.cloudflare.com'
 		add_list system.ntp.server='pool.ntp.org'
 	EOF
 
