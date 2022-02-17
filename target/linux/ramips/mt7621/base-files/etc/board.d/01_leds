@@ -58,6 +58,7 @@ gnubee,gb-pc2)
 linksys,e5600)
 	ucidef_set_led_netdev "wan" "wan link" "blue:wan" "wan" "link"
 	;;
+linksys,ea6350-v4|\
 linksys,ea7300-v1|\
 linksys,ea7300-v2|\
 linksys,ea7500-v2|\
@@ -92,7 +93,10 @@ netgear,wndr3700-v5)
 	ucidef_set_led_netdev "wan" "wan" "green:wan" "wan"
 	;;
 netgear,r6700-v2|\
-netgear,r6800)
+netgear,r6800|\
+netgear,r6900-v2|\
+netgear,r7200|\
+netgear,r7450)
 	ucidef_set_led_netdev "wan" "WAN" "white:wan" "wan"
 	ucidef_set_led_netdev "lan1" "LAN1" "white:lan1" "lan1"
 	ucidef_set_led_netdev "lan2" "LAN2" "white:lan2" "lan2"
@@ -121,6 +125,11 @@ xzwifi,creativebox-v1)
 	;;
 xiaomi,mi-router-ac2100)
 	ucidef_set_led_switch "wan" "wan" "blue:wan" "switch0" "0x1"
+	;;
+xiaomi,mi-router-cr6606|\
+xiaomi,mi-router-cr6608|\
+xiaomi,mi-router-cr6609)
+	ucidef_set_led_netdev "internet" "Internet" "blue:net" "wan"
 	;;
 xiaomi,redmi-router-ac2100)
 	ucidef_set_led_switch "wan" "wan" "white:wan" "switch0" "0x1"

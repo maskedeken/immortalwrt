@@ -1,23 +1,20 @@
 #!/bin/sh /etc/rc.common
-# (C) 2013 openwrt.org
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Copyright (C) 2013-2020 OpenWrt.org
 
-START=40
+START=11
 
 boot() {
 	/sbin/block mount
 }
 
 start() {
-	/sbin/block mount
+	return 0
 }
 
 restart() {
-	/sbin/block umount
-	/sbin/block mount
-}
-
-restart() {
-	start
+	return 0
 }
 
 stop() {

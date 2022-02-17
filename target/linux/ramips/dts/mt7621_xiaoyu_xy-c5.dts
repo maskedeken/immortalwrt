@@ -47,6 +47,7 @@
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		spi-max-frequency = <25000000>;
+		broken-flash-reset;
 
 		partitions {
 			compatible = "fixed-partitions";
@@ -87,7 +88,8 @@
 &ethernet {
 	compatible = "mediatek,ralink-mt7621-eth";
 	mediatek,switch = <&gsw>;
-	mtd-mac-address = <&factory 0x4>;
+	nvmem-cells = <&macaddr_factory_4>;
+	nvmem-cell-names = "mac-address";
 };
 
 &switch0 {

@@ -14,6 +14,7 @@ define Device/asus_rt-n56u
   DEVICE_MODEL := RT-N56U
   DEVICE_PACKAGES := kmod-usb-ohci kmod-usb2
   SUPPORTED_DEVICES += rt-n56u
+  DEFAULT := n
 endef
 TARGET_DEVICES += asus_rt-n56u
 
@@ -97,7 +98,6 @@ TARGET_DEVICES += omnima_hpm
 define Device/samsung_cy-swr1100
   $(Device/seama)
   SOC := rt3662
-  BLOCKSIZE := 64k
   IMAGE_SIZE := 7872k
   KERNEL := $(KERNEL_DTB)
   SEAMA_SIGNATURE := wrgnd10_samsung_ss815

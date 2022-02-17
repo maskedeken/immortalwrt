@@ -39,7 +39,7 @@ define Device/friendlyarm_nanopi-neo-air
   DEVICE_VENDOR := FriendlyARM
   DEVICE_MODEL := NanoPi NEO Air
   DEVICE_PACKAGES := kmod-leds-gpio kmod-brcmfmac \
-	cypress-firmware-43430-sdio wpad-basic-wolfssl
+	brcmfmac-firmware-43430a0-sdio wpad-basic-wolfssl
   SOC := sun8i-h3
 endef
 TARGET_DEVICES += friendlyarm_nanopi-neo-air
@@ -63,7 +63,9 @@ TARGET_DEVICES += friendlyarm_zeropi
 define Device/lamobo_lamobo-r1
   DEVICE_VENDOR := Lamobo
   DEVICE_MODEL := Lamobo R1
-  DEVICE_PACKAGES:=kmod-ata-sunxi kmod-rtl8192cu swconfig wpad-basic-wolfssl
+  DEVICE_ALT0_VENDOR := Bananapi
+  DEVICE_ALT0_MODEL := BPi-R1
+  DEVICE_PACKAGES := kmod-ata-sunxi kmod-rtl8192cu wpad-basic-wolfssl
   SOC := sun7i-a20
 endef
 TARGET_DEVICES += lamobo_lamobo-r1

@@ -44,8 +44,8 @@ ifeq ($(PKG_VERSION),10.3.0)
   PKG_HASH:=64f404c1a650f27fc33da242e1f2df54952e3963a49e06e73f6940f3223ac344
 endif
 
-ifeq ($(PKG_VERSION),11.1.0)
-  PKG_HASH:=4c4a6fb8a8396059241c2e674b85b351c26a5d678274007f076957afa1cc9ddf
+ifeq ($(PKG_VERSION),11.2.0)
+  PKG_HASH:=d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b
 endif
 
 PATCH_DIR=../patches/$(GCC_VERSION)
@@ -116,6 +116,7 @@ GCC_CONFIGURE:= \
 		$(if $(CONFIG_mips64)$(CONFIG_mips64el),--with-arch=mips64 \
 			--with-abi=$(call qstrip,$(CONFIG_MIPS64_ABI))) \
 		$(if $(CONFIG_arc),--with-cpu=$(CONFIG_CPU_TYPE)) \
+		$(if $(CONFIG_powerpc64), $(if $(CONFIG_USE_MUSL),--with-abi=elfv2)) \
 		--with-gmp=$(TOPDIR)/staging_dir/host \
 		--with-mpfr=$(TOPDIR)/staging_dir/host \
 		--with-mpc=$(TOPDIR)/staging_dir/host \

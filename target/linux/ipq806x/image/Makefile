@@ -27,7 +27,7 @@ define Device/Default
 	PROFILES := Default
 	KERNEL_DEPENDS = $$(wildcard $(DTS_DIR)/$$(DEVICE_DTS).dts)
 	KERNEL_INITRAMFS_PREFIX := $$(IMG_PREFIX)-$(1)-initramfs
-	KERNEL_PREFIX := $$(IMAGE_PREFIX)
+	KERNEL_PREFIX := $$(DEVICE_IMG_PREFIX)
 	KERNEL_LOADADDR = 0x42208000
 	DEVICE_DTS = $$(SOC)-$(lastword $(subst _, ,$(1)))
 	DEVICE_DTS_CONFIG := config@1
@@ -404,14 +404,15 @@ define Device/tplink_vr2600v
 	KERNEL_SUFFIX := -uImage
 	KERNEL = kernel-bin | append-dtb | uImage none
 	KERNEL_NAME := zImage
-	KERNEL_SIZE := 3072k
+	IMAGE_SIZE := 12672k
 	SOC := qcom-ipq8064
 	BLOCKSIZE := 128k
 	PAGESIZE := 2048
 	BOARD_NAME := vr2600v
 	SUPPORTED_DEVICES += vr2600v
 	DEVICE_PACKAGES := ath10k-firmware-qca99x0-ct
-	IMAGE/sysupgrade.bin := pad-extra 512 | append-kernel | pad-to $$$$(KERNEL_SIZE) | append-rootfs | pad-rootfs | append-metadata
+	IMAGE/sysupgrade.bin := pad-extra 512 | append-kernel | \
+		append-rootfs | pad-rootfs | append-metadata
 endef
 TARGET_DEVICES += tplink_vr2600v
 

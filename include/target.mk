@@ -51,26 +51,17 @@ DEFAULT_PACKAGES.router:=\
 # For easy usage
 DEFAULT_PACKAGES.tweak:=\
 	block-mount \
-	ca-certificates \
-	coreutils \
-	ddns-scripts_aliyun \
-	ddns-scripts_dnspod \
-	default-settings \
+	default-settings-chn \
 	kmod-ipt-raw \
 	kmod-nf-nathelper \
 	kmod-nf-nathelper-extra \
 	luci \
 	luci-app-cpufreq \
 	luci-app-turboacc \
-	luci-app-ssr-plus \
 	luci-app-upnp \
 	luci-app-vlmcsd \
-	luci-compat \
-	luci-lib-base \
 	luci-lib-fs \
-	luci-lib-ipkg \
-	luci-proto-relay \
-	wget-ssl
+	luci-lib-ipkg
 
 ifneq ($(DUMP),)
   all: dumpinfo
@@ -246,6 +237,7 @@ ifeq ($(DUMP),1)
   endif
   ifeq ($(ARCH),powerpc64)
     CPU_TYPE ?= powerpc64
+    CPU_CFLAGS_e5500:=-mcpu=e5500
     CPU_CFLAGS_powerpc64:=-mcpu=powerpc64
   endif
   ifeq ($(ARCH),sparc)

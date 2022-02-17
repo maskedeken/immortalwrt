@@ -50,6 +50,8 @@ ocedo,raccoon|\
 openmesh,a40|\
 openmesh,a60|\
 openmesh,om5p|\
+openmesh,om5p-an|\
+openmesh,om5p-ac-v1|\
 openmesh,om5p-ac-v2|\
 ubnt,nanostation-m|\
 yuncore,a770|\
@@ -69,9 +71,8 @@ buffalo,wzr-hp-g300nh-s)
 domywifi,dw33d)
 	ubootenv_add_uci_config "/dev/mtd4" "0x0" "0x10000" "0x10000"
 	;;
-glinet,gl-ar150)
-	ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x8000" "0x10000"
-	;;
+dongwon,dw02-412h-64m|\
+dongwon,dw02-412h-128m|\
 glinet,gl-ar300m-lite|\
 glinet,gl-ar300m-nand|\
 glinet,gl-ar300m-nor|\
@@ -79,6 +80,9 @@ glinet,gl-ar300m16)
 	idx="$(find_mtd_index u-boot-env)"
 	[ -n "$idx" ] && \
 		ubootenv_add_uci_config "/dev/mtd$idx" "0x0" "0x10000" "0x10000"
+	;;
+glinet,gl-ar150)
+	ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x8000" "0x10000"
 	;;
 netgear,wndr3700|\
 netgear,wndr3700-v2|\
@@ -91,6 +95,7 @@ netgear,wndr4300tn|\
 netgear,wndr4300sw)
 	ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x40000" "0x20000"
 	;;
+openmesh,om2p-v1|\
 openmesh,om2p-v2|\
 openmesh,om2p-v4|\
 openmesh,om2p-hs-v1|\
