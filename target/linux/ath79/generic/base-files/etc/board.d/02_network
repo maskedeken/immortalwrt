@@ -84,6 +84,7 @@ ath79_setup_interfaces()
 	ubnt,lap-120|\
 	ubnt,litebeam-ac-gen2|\
 	ubnt,nanobeam-ac|\
+	ubnt,nanobeam-ac-xc|\
 	ubnt,nanobridge-m|\
 	ubnt,nanostation-ac-loco|\
 	ubnt,nanostation-loco-m|\
@@ -301,8 +302,7 @@ ath79_setup_interfaces()
 	iodata,wn-ac1600dgr2|\
 	iodata,wn-ag300dgr|\
 	pcs,cr5000|\
-	wd,mynet-n750|\
-	xwrt,csac)
+	wd,mynet-n750)
 		ucidef_add_switch "switch0" \
 			"0@eth0" "1:lan" "2:lan" "3:lan" "4:lan" "5:wan"
 		;;
@@ -416,6 +416,10 @@ ath79_setup_interfaces()
 	tplink,archer-d7b-v1)
 		ucidef_add_switch "switch0" \
 			"0@eth1" "3:lan:3" "4:lan:2" "5:lan:1" "6@eth0" "2:wan:4" "1:wan:5"
+		;;
+	tplink,deco-m4r-v1)
+		ucidef_add_switch "switch0" \
+			"0@eth0" "3:lan:1" "5:lan:2"
 		;;
 	tplink,eap225-wall-v2)
 		ucidef_add_switch "switch0" \
@@ -709,6 +713,7 @@ ath79_setup_macs()
 		;;
 	ubnt,litebeam-ac-gen2|\
 	ubnt,nanobeam-ac-gen2|\
+	ubnt,nanobeam-ac-xc|\
 	ubnt,powerbeam-5ac-500|\
 	ubnt,powerbeam-5ac-gen2)
 		label_mac=$(mtd_get_mac_binary art 0x5006)
@@ -723,11 +728,6 @@ ath79_setup_macs()
 		;;
 	xiaomi,aiot-ac2350)
 		lan_mac=$(mtd_get_mac_binary art 0x1002)
-		;;
-	xwrt,csac)
-		wan_mac=$(mtd_get_mac_binary art 0x0)
-		lan_mac=$(macaddr_add "$wan_mac" 1)
-		label_mac=$wan_mac
 		;;
 	zyxel,nbg6616)
 		label_mac=$(mtd_get_mac_ascii u-boot-env ethaddr)

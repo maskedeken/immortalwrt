@@ -108,7 +108,7 @@ nand_restore_config() {
 		rmdir /tmp/new_root
 		return 1
 	fi
-	mv "$1" "/tmp/new_root/sysupgrade.tgz"
+	mv "$1" "/tmp/new_root/$BACKUP_FILE"
 	umount /tmp/new_root
 	sync
 	rmdir /tmp/new_root
@@ -295,6 +295,7 @@ nand_upgrade_tar() {
 		tar xf "$tar_file" ${board_dir}/kernel -O | mtd write - $CI_KERNPART
 	}
 	[ "$kernel_length" = 0 -o ! -z "$kernel_mtd" ] && has_kernel=
+	[ "$CI_KERNPART" = "none" ] && has_kernel=
 
 	nand_upgrade_prepare_ubi "$rootfs_length" "$rootfs_type" "${has_kernel:+$kernel_length}" "$has_env"
 
@@ -315,15 +316,6 @@ nand_upgrade_tar() {
 
 # Recognize type of passed file and start the upgrade process
 nand_do_upgrade() {
-	if [ -n "$IS_PRE_UPGRADE" ]; then
-		# Previously, nand_do_upgrade was called from the platform_pre_upgrade
-		# hook; this piece of code handles scripts that haven't been
-		# updated. All scripts should gradually move to call nand_do_upgrade
-		# from platform_do_upgrade instead.
-		export do_upgrade="nand_do_upgrade '$1'"
-		return
-	fi
-
 	local file_type=$(identify $1)
 
 	if type 'platform_nand_pre_upgrade' >/dev/null 2>/dev/null; then

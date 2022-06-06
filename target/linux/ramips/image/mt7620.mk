@@ -805,6 +805,22 @@ define Device/netgear_wn3000rp-v3
 endef
 TARGET_DEVICES += netgear_wn3000rp-v3
 
+define Device/netgear_wn3100rp-v2
+  SOC := mt7620a
+  IMAGE_SIZE := 7872k
+  NETGEAR_HW_ID := 29764883+8+0+32+2x2+0
+  NETGEAR_BOARD_ID := WN3100RPv2
+  BLOCKSIZE := 4k
+  IMAGES += factory.bin
+  KERNEL := $(KERNEL_DTB) | uImage lzma | pad-offset 64k 64 | \
+	append-uImage-fakehdr filesystem
+  IMAGE/factory.bin := $$(sysupgrade_bin) | check-size | netgear-dni
+  DEVICE_VENDOR := NETGEAR
+  DEVICE_MODEL := WN3100RP
+  DEVICE_VARIANT := v2
+endef
+TARGET_DEVICES += netgear_wn3100rp-v2
+
 define Device/netis_wf2770
   SOC := mt7620a
   IMAGE_SIZE := 16064k
@@ -1200,6 +1216,17 @@ define Device/wavlink_wl-wn579x3
   DEVICE_PACKAGES := kmod-mt76x2 kmod-phy-realtek
 endef
 TARGET_DEVICES += wavlink_wl-wn579x3
+
+define Device/wevo_air-duo
+  SOC := mt7620a
+  IMAGE_SIZE := 15040k
+  UIMAGE_NAME := AIR DUO(0.0.0)
+  KERNEL_INITRAMFS_SUFFIX := .upload
+  DEVICE_VENDOR := WeVO
+  DEVICE_MODEL := AIR DUO
+  DEVICE_PACKAGES := kmod-mt76x2 kmod-usb2 kmod-usb-ohci kmod-usb-storage-uas
+endef
+TARGET_DEVICES += wevo_air-duo
 
 define Device/wrtnode_wrtnode
   SOC := mt7620n

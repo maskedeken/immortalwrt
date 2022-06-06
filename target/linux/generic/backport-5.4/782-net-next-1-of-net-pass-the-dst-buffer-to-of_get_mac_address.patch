@@ -272,7 +272,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	void __iomem *descmap;
  	const struct of_device_id *of_id = NULL;
  
-@@ -1525,10 +1524,8 @@ static int altera_tse_probe(struct platf
+@@ -1528,10 +1527,8 @@ static int altera_tse_probe(struct platf
  	priv->rx_dma_buf_sz = ALTERA_RXDMABUFFER_SIZE;
  
  	/* get default MAC address from device tree */
@@ -334,7 +334,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	}
 --- a/drivers/net/ethernet/broadcom/bcmsysport.c
 +++ b/drivers/net/ethernet/broadcom/bcmsysport.c
-@@ -2420,7 +2420,6 @@ static int bcm_sysport_probe(struct plat
+@@ -2423,7 +2423,6 @@ static int bcm_sysport_probe(struct plat
  	struct bcm_sysport_priv *priv;
  	struct device_node *dn;
  	struct net_device *dev;
@@ -342,7 +342,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	u32 txq, rxq;
  	int ret;
  
-@@ -2502,12 +2501,10 @@ static int bcm_sysport_probe(struct plat
+@@ -2505,12 +2504,10 @@ static int bcm_sysport_probe(struct plat
  	}
  
  	/* Initialize netdevice members */
@@ -423,7 +423,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	if (bgmac->irq < 0)
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4206,7 +4206,6 @@ static int macb_probe(struct platform_de
+@@ -4237,7 +4237,6 @@ static int macb_probe(struct platform_de
  	struct net_device *dev;
  	struct resource *regs;
  	void __iomem *mem;
@@ -431,7 +431,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	struct macb *bp;
  	int err, val;
  
-@@ -4319,15 +4318,11 @@ static int macb_probe(struct platform_de
+@@ -4350,15 +4349,11 @@ static int macb_probe(struct platform_de
  	if (bp->caps & MACB_CAPS_NEEDS_RSTONUBR)
  		bp->rx_intr_mask |= MACB_BIT(RXUBR);
  
@@ -607,7 +607,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		/*
 --- a/drivers/net/ethernet/freescale/fman/mac.c
 +++ b/drivers/net/ethernet/freescale/fman/mac.c
-@@ -605,7 +605,6 @@ static int mac_probe(struct platform_dev
+@@ -616,7 +616,6 @@ static int mac_probe(struct platform_dev
  	struct platform_device	*of_dev;
  	struct resource		 res;
  	struct mac_priv_s	*priv;
@@ -615,7 +615,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	u32			 val;
  	u8			fman_id;
  	int			phy_if;
-@@ -723,13 +722,12 @@ static int mac_probe(struct platform_dev
+@@ -734,13 +733,12 @@ static int mac_probe(struct platform_dev
  	priv->cell_index = (u8)val;
  
  	/* Get the MAC address */
@@ -1236,7 +1236,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -398,7 +398,7 @@ static int socfpga_dwmac_probe(struct pl
+@@ -397,7 +397,7 @@ static int socfpga_dwmac_probe(struct pl
  	if (ret)
  		return ret;
  
@@ -1269,7 +1269,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -1127,7 +1127,7 @@ static int sun8i_dwmac_probe(struct plat
+@@ -1128,7 +1128,7 @@ static int sun8i_dwmac_probe(struct plat
  	if (ret)
  		return ret;
  
@@ -1340,7 +1340,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	}
  
  	plat->phy_interface = of_get_phy_mode(np);
-@@ -639,7 +639,7 @@ void stmmac_remove_config_dt(struct plat
+@@ -638,7 +638,7 @@ void stmmac_remove_config_dt(struct plat
  }
  #else
  struct plat_stmmacenet_data *
@@ -1479,7 +1479,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	__be32 *p;
  	bool little_endian;
  	int rc = 0;
-@@ -1492,8 +1492,8 @@ static int temac_probe(struct platform_d
+@@ -1494,8 +1494,8 @@ static int temac_probe(struct platform_d
  
  	if (temac_np) {
  		/* Retrieve the MAC address */
@@ -1492,7 +1492,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  		}
 --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
 +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -1663,7 +1663,7 @@ static int axienet_probe(struct platform
+@@ -1665,7 +1665,7 @@ static int axienet_probe(struct platform
  	struct device_node *np;
  	struct axienet_local *lp;
  	struct net_device *ndev;
@@ -1501,7 +1501,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	struct resource *ethres;
  	u32 value;
  
-@@ -1835,13 +1835,14 @@ static int axienet_probe(struct platform
+@@ -1837,13 +1837,14 @@ static int axienet_probe(struct platform
  		dev_info(&pdev->dev, "Ethernet core IRQ not defined\n");
  
  	/* Retrieve the MAC address */
@@ -1524,7 +1524,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	lp->coalesce_count_tx = XAXIDMA_DFT_TX_THRESHOLD;
 --- a/drivers/net/ethernet/xilinx/xilinx_emaclite.c
 +++ b/drivers/net/ethernet/xilinx/xilinx_emaclite.c
-@@ -1113,7 +1113,6 @@ static int xemaclite_of_probe(struct pla
+@@ -1122,7 +1122,6 @@ static int xemaclite_of_probe(struct pla
  	struct net_device *ndev = NULL;
  	struct net_local *lp = NULL;
  	struct device *dev = &ofdev->dev;
@@ -1532,7 +1532,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	int rc = 0;
  
-@@ -1155,12 +1154,9 @@ static int xemaclite_of_probe(struct pla
+@@ -1164,12 +1163,9 @@ static int xemaclite_of_probe(struct pla
  	lp->next_rx_buf_to_use = 0x0;
  	lp->tx_ping_pong = get_bool(ofdev, "xlnx,tx-ping-pong");
  	lp->rx_ping_pong = get_bool(ofdev, "xlnx,rx-ping-pong");
@@ -1833,7 +1833,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	}
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3444,10 +3444,11 @@ static int bcmgenet_probe(struct platfor
+@@ -3451,10 +3451,11 @@ static int bcmgenet_probe(struct platfor
  	const struct of_device_id *of_id = NULL;
  	struct bcmgenet_priv *priv;
  	struct net_device *dev;
@@ -1846,7 +1846,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  
  	/* Up to GENET_MAX_MQ_CNT + 1 TX queues and RX queues */
  	dev = alloc_etherdev_mqs(sizeof(*priv), GENET_MAX_MQ_CNT + 1,
-@@ -3474,14 +3475,15 @@ static int bcmgenet_probe(struct platfor
+@@ -3481,14 +3482,15 @@ static int bcmgenet_probe(struct platfor
  	}
  
  	if (dn) {
@@ -1865,7 +1865,7 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
  	}
  
  	priv->base = devm_platform_ioremap_resource(pdev, 0);
-@@ -3494,7 +3496,6 @@ static int bcmgenet_probe(struct platfor
+@@ -3501,7 +3503,6 @@ static int bcmgenet_probe(struct platfor
  
  	SET_NETDEV_DEV(dev, &pdev->dev);
  	dev_set_drvdata(&pdev->dev, dev);
