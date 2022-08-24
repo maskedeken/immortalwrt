@@ -53,12 +53,12 @@ define Build/edimax-headers
 	$(eval edimax_model=$(word 2,$(1)))
 
 	$(STAGING_DIR_HOST)/bin/edimax_fw_header -M $(edimax_magic) -m $(edimax_model)\
-		-v $(VERSION_DIST)$(firstword $(subst +, , $(firstword $(subst -, ,$(REVISION))))) \
+		-v Emortal$(firstword $(subst +, , $(firstword $(subst -, ,$(REVISION))))) \
 		-n "uImage" \
 		-i $(KDIR)/loader-$(DEVICE_NAME).uImage \
 		-o $@.uImage
 	$(STAGING_DIR_HOST)/bin/edimax_fw_header -M $(edimax_magic) -m $(edimax_model)\
-		-v $(VERSION_DIST)$(firstword $(subst +, , $(firstword $(subst -, ,$(REVISION))))) \
+		-v Emortal$(firstword $(subst +, , $(firstword $(subst -, ,$(REVISION))))) \
 		-n "rootfs" \
 		-i $@ \
 		-o $@.rootfs
@@ -70,7 +70,7 @@ define Build/mkdapimg2
 	$(STAGING_DIR_HOST)/bin/mkdapimg2 \
 		-i $@ -o $@.new \
 		-s $(DAP_SIGNATURE) \
-		-v $(VERSION_DIST)-$(firstword $(subst +, , \
+		-v Emortal-$(firstword $(subst +, , \
 			$(firstword $(subst -, ,$(REVISION))))) \
 		-r Default \
 		$(if $(1),-k $(1))
@@ -149,34 +149,6 @@ endef
 
 define Build/wrgg-pad-rootfs
 	$(STAGING_DIR_HOST)/bin/padjffs2 $(IMAGE_ROOTFS) -c 64 >>$@
-endef
-
-define Build/xwrt_csac10-factory
-  -[ -f "$@" ] && \
-  mkdir -p "$@.tmp" && \
-  mv "$@" "$@.tmp/UploadBrush-bin.img" && \
-  binmd5=$$($(STAGING_DIR_HOST)/bin/mkhash md5 "$@.tmp/UploadBrush-bin.img" | head -c32) && \
-  oemmd5=$$(echo -n TB-CSAC10-QCA9563_9886-ROUTE-CSAC10 | $(STAGING_DIR_HOST)/bin/mkhash md5 | head -c32) && \
-  echo -n $${binmd5}$${oemmd5} | $(STAGING_DIR_HOST)/bin/mkhash md5 | head -c32 >"$@.tmp/bin_random_oem.txt" && \
-  echo -n V4.4-201910201745 >"$@.tmp/version.txt" && \
-  $(TAR) -czf $@.tmp.tgz -C "$@.tmp" UploadBrush-bin.img bin_random_oem.txt version.txt && \
-  $(STAGING_DIR_HOST)/bin/openssl aes-256-cbc -md md5 -salt -in $@.tmp.tgz -out "$@" -k QiLunSmartWL && \
-  printf %32s CSAC10 >>"$@" && \
-  rm -rf "$@.tmp"
-endef
-
-define Build/xwrt_csac05-factory
-  -[ -f "$@" ] && \
-  mkdir -p "$@.tmp" && \
-  mv "$@" "$@.tmp/UploadBrush-bin.img" && \
-  binmd5=$$($(STAGING_DIR_HOST)/bin/mkhash md5 "$@.tmp/UploadBrush-bin.img" | head -c32) && \
-  oemmd5=$$(echo -n TB-CSAC05-QCA9563_9886-ROUTE-CSAC05 | $(STAGING_DIR_HOST)/bin/mkhash md5 | head -c32) && \
-  echo -n $${binmd5}$${oemmd5} | $(STAGING_DIR_HOST)/bin/mkhash md5 | head -c32 >"$@.tmp/bin_random_oem.txt" && \
-  echo -n V4.4-201910201745 >"$@.tmp/version.txt" && \
-  $(TAR) -czf $@.tmp.tgz -C "$@.tmp" UploadBrush-bin.img bin_random_oem.txt version.txt && \
-  $(STAGING_DIR_HOST)/bin/openssl aes-256-cbc -md md5 -salt -in $@.tmp.tgz -out "$@" -k QiLunSmartWL && \
-  printf %32s CSAC05 >>"$@" && \
-  rm -rf "$@.tmp"
 endef
 
 define Device/seama
@@ -1261,7 +1233,7 @@ define Device/hak5_lan-turtle
   TPLINK_HWID := 0x5348334c
   IMAGES := sysupgrade.bin
   DEVICE_PACKAGES := kmod-usb-chipidea2 -iwinfo -kmod-ath9k -swconfig \
-	-uboot-envtools -wpad-basic-wolfssl
+	-uboot-envtools -wpad-basic-openssl
   SUPPORTED_DEVICES += lan-turtle
 endef
 TARGET_DEVICES += hak5_lan-turtle
@@ -1274,7 +1246,7 @@ define Device/hak5_packet-squirrel
   TPLINK_HWID := 0x5351524c
   IMAGES := sysupgrade.bin
   DEVICE_PACKAGES := kmod-usb-chipidea2 -iwinfo -kmod-ath9k -swconfig \
-	-uboot-envtools -wpad-basic-wolfssl
+	-uboot-envtools -wpad-basic-openssl
   SUPPORTED_DEVICES += packet-squirrel
 endef
 TARGET_DEVICES += hak5_packet-squirrel
@@ -1297,7 +1269,7 @@ define Device/iodata_etg3-r
   DEVICE_VENDOR := I-O DATA
   DEVICE_MODEL := ETG3-R
   IMAGE_SIZE := 7680k
-  DEVICE_PACKAGES := -iwinfo -kmod-ath9k -wpad-basic-wolfssl
+  DEVICE_PACKAGES := -iwinfo -kmod-ath9k -wpad-basic-openssl
 endef
 TARGET_DEVICES += iodata_etg3-r
 
@@ -1357,7 +1329,7 @@ define Device/jjplus_ja76pf2
   SOC := ar7161
   DEVICE_VENDOR := jjPlus
   DEVICE_MODEL := JA76PF2
-  DEVICE_PACKAGES += -kmod-ath9k -swconfig -wpad-basic-wolfssl -uboot-envtools fconfig
+  DEVICE_PACKAGES += -kmod-ath9k -swconfig -wpad-basic-openssl -uboot-envtools fconfig
   IMAGES += kernel.bin rootfs.bin
   IMAGE/kernel.bin := append-kernel
   IMAGE/rootfs.bin := append-rootfs | pad-rootfs
@@ -1461,6 +1433,7 @@ define Device/nec_wg800hp
 	append-rootfs | pad-rootfs | check-size | \
 	xor-image -p 6A57190601121E4C004C1E1201061957 -x | nec-fw LASER_ATERM
   DEVICE_PACKAGES := kmod-ath10k-ct-smallbuffers ath10k-firmware-qca9887-ct-full-htt
+  DEFAULT := n
 endef
 TARGET_DEVICES += nec_wg800hp
 
@@ -1808,12 +1781,12 @@ endef
 TARGET_DEVICES += openmesh_om5p
 
 define Device/openmesh_om5p-ac-v2
+  $(Device/openmesh_common_64k)
   SOC := qca9558
-  DEVICE_VENDOR := OpenMesh
   DEVICE_MODEL := OM5P-AC
   DEVICE_VARIANT := v2
-  DEVICE_PACKAGES := kmod-ath10k-ct ath10k-firmware-qca988x-ct om-watchdog
-  IMAGE_SIZE := 7808k
+  DEVICE_PACKAGES += kmod-ath10k-ct ath10k-firmware-qca988x-ct
+  OPENMESH_CE_TYPE := OM5PAC
   SUPPORTED_DEVICES += om5p-acv2
 endef
 TARGET_DEVICES += openmesh_om5p-ac-v2
@@ -2108,6 +2081,7 @@ define Device/sitecom_wlr-7100
 	append-rootfs | pad-rootfs | check-size | \
 	senao-header -r 0x222 -p 0x53 -t 2
   IMAGE_SIZE := 7488k
+  DEFAULT := n
 endef
 TARGET_DEVICES += sitecom_wlr-7100
 
@@ -2247,20 +2221,6 @@ define Device/xiaomi_mi-router-4q
 endef
 TARGET_DEVICES += xiaomi_mi-router-4q
 
-define Device/xwrt_csac
-  SOC := qca9563
-  DEVICE_VENDOR := XWRT
-  DEVICE_MODEL := CSAC
-  KERNEL_SIZE := 1472k
-  IMAGE_SIZE := 16000k
-  IMAGES += factory-10.bin factory-05.bin
-  IMAGE/sysupgrade.bin := append-rootfs | pad-rootfs | pad-to 14528k | append-kernel | append-metadata | check-size $$$$(IMAGE_SIZE)
-  IMAGE/factory-10.bin := $$(IMAGE/sysupgrade.bin) | xwrt_csac10-factory $(1)
-  IMAGE/factory-05.bin := $$(IMAGE/sysupgrade.bin) | xwrt_csac05-factory $(1)
-  DEVICE_PACKAGES := kmod-leds-reset kmod-ath10k-ct ath10k-firmware-qca9888-ct kmod-usb-core kmod-usb2
-endef
-TARGET_DEVICES += xwrt_csac
-
 define Device/yuncore_a770
   SOC := qca9531
   DEVICE_VENDOR := YunCore
@@ -2282,6 +2242,27 @@ define Device/yuncore_a782
   IMAGE/tftp.bin := $$(IMAGE/sysupgrade.bin) | yuncore-tftp-header-16m
 endef
 TARGET_DEVICES += yuncore_a782
+
+define Device/yuncore_a930
+  SOC := qca9533
+  DEVICE_VENDOR := YunCore
+  DEVICE_MODEL := A930
+  IMAGE_SIZE := 16000k
+  IMAGES += tftp.bin
+  IMAGE/tftp.bin := $$(IMAGE/sysupgrade.bin) | yuncore-tftp-header-16m
+endef
+TARGET_DEVICES += yuncore_a930
+
+define Device/yuncore_xd3200
+  SOC := qca9563
+  DEVICE_VENDOR := YunCore
+  DEVICE_MODEL := XD3200
+  DEVICE_PACKAGES := kmod-ath10k-ct ath10k-firmware-qca988x-ct
+  IMAGE_SIZE := 16000k
+  IMAGES += tftp.bin
+  IMAGE/tftp.bin := $$(IMAGE/sysupgrade.bin) | yuncore-tftp-header-16m
+endef
+TARGET_DEVICES += yuncore_xd3200
 
 define Device/yuncore_xd4200
   SOC := qca9563
