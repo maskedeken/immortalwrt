@@ -1,0 +1,9 @@
+diff --color -ur ppsspp-adhoc-server/Makefile b/Makefile
+--- ppsspp-adhoc-server/Makefile	2022-06-20 14:49:41.258635932 +0800
++++ b/Makefile	2022-06-20 14:50:10.779723737 +0800
+@@ -1,4 +1,4 @@
+-CC = gcc
++CC = $(TARGET_CC)
+ SRC_DIR = ./src/
+ CFLAGS = -fpack-struct -I. -I$(SRC_DIR)
+ OBJ = main.o user.o status.o
