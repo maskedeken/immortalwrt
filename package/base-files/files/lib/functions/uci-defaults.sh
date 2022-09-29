@@ -96,7 +96,7 @@ ucidef_set_interfaces_lan_wan() {
 
 ucidef_set_bridge_device() {
 	json_select_object bridge
-	json_add_string name "${1:switch0}"
+	json_add_string name "${1:-switch0}"
 	json_select ..
 }
 
@@ -413,6 +413,15 @@ ucidef_set_led_default() {
 	_ucidef_set_led_common "$1" "$2" "$3"
 
 	json_add_string default "$default"
+	json_select ..
+
+	json_select ..
+}
+
+ucidef_set_led_heartbeat() {
+	_ucidef_set_led_common "$1" "$2" "$3"
+
+	json_add_string trigger heartbeat
 	json_select ..
 
 	json_select ..
