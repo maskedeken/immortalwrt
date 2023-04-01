@@ -91,6 +91,19 @@ define Device/ZyXELImage
 	IMAGE/sysupgrade.bin/squashfs := append-rootfs | pad-to $$$$(BLOCKSIZE) | sysupgrade-tar rootfs=$$$$@ | append-metadata
 endef
 
+define Device/askey_rt4230w-rev6
+	$(call Device/LegacyImage)
+	DEVICE_VENDOR := Askey
+	DEVICE_MODEL := RT4230W
+	DEVICE_VARIANT := REV6
+	SOC := qcom-ipq8065
+	BLOCKSIZE := 128k
+	PAGESIZE := 2048
+	DEVICE_PACKAGES := ath10k-firmware-qca9984-ct
+	KERNEL_IN_UBI := 1
+endef
+TARGET_DEVICES += askey_rt4230w-rev6
+
 define Device/asrock_g10
 	$(call Device/FitImage)
 	$(call Device/UbiFit)
@@ -392,6 +405,23 @@ define Device/ubnt_unifi-ac-hd
 	IMAGE/sysupgrade.bin := append-kernel | pad-to $$$$(BLOCKSIZE) | append-rootfs | pad-rootfs | append-metadata | check-size
 endef
 TARGET_DEVICES += ubnt_unifi-ac-hd
+
+define Device/xiaomi_mi-router-hd
+	$(call Device/LegacyImage)
+	DEVICE_VENDOR := Xiaomi
+	DEVICE_MODEL := Mi Router HD
+	SOC := qcom-ipq8064
+	BLOCKSIZE := 128k
+	PAGESIZE := 2048
+	KERNEL_SIZE := 4096k
+	IMAGE_SIZE := 86016k
+	UBINIZE_OPTS := -E 5
+	IMAGES := factory.bin sysupgrade.bin
+	IMAGE/factory.bin := append-kernel | pad-to $$$$(KERNEL_SIZE) | append-ubi | pad-to $$$$(BLOCKSIZE) | check-size
+	DEVICE_PACKAGES := kmod-i2c-gpio kmod-hwmon-lm75 hwmon-drivetemp \
+		kmod-usb-storage-uas ath10k-firmware-qca9984-ct ath10k-firmware-qca99x0-ct
+endef
+TARGET_DEVICES += xiaomi_mi-router-hd
 
 define Device/zyxel_nbg6817
 	DEVICE_VENDOR := ZyXEL

@@ -10,10 +10,10 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=mac80211
 
-PKG_VERSION:=5.15.58-1
-PKG_RELEASE:=2
-PKG_SOURCE_URL:=@KERNEL/linux/kernel/projects/backports/stable/v5.15.58/
-PKG_HASH:=a3c2a2b7bbaf8943c65fd72f4e7d7ad5e205aeae28b26c835f9d8afa0f9810bf
+PKG_VERSION:=5.15.92-1
+PKG_RELEASE:=1
+PKG_SOURCE_URL:=@KERNEL/linux/kernel/projects/backports/stable/v5.15.92/
+PKG_HASH:=d518e3614a0a8b635e7b7febf2a3ee1645a95d953fd353920ceee22f159f26f1
 
 PKG_SOURCE:=backports-$(PKG_VERSION).tar.xz
 PKG_BUILD_DIR:=$(KERNEL_BUILD_DIR)/backports-$(PKG_VERSION)
@@ -177,6 +177,7 @@ define KernelPackage/hermes
   $(call KernelPackage/mac80211/Default)
   TITLE:=Hermes 802.11b chipset support
   DEPENDS:=@PCI_SUPPORT||PCMCIA_SUPPORT +kmod-cfg80211 +@DRIVER_WEXT_SUPPORT +kmod-crypto-michael-mic @!TARGET_zynq
+  DEFAULT:=n
   FILES:=$(PKG_BUILD_DIR)/drivers/net/wireless/intersil/orinoco/orinoco.ko
   AUTOLOAD:=$(call AutoProbe,orinoco)
 endef
