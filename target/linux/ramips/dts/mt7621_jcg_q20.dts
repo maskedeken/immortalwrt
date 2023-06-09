@@ -17,7 +17,7 @@
 
 			partition@0 {
 				label = "ubi";
-				reg = <0x0 0x5880000>;
+				reg = <0x0 0x5900000>;
 			};
 		};
 	};
@@ -47,19 +47,13 @@
 		};
 
 		partition@180000 {
-			label = "reserved";
-			reg = <0x180000 0x80000>;
-			read-only;
-		};
-
-		partition@200000 {
 			label = "kernel";
-			reg = <0x200000 0x400000>;
+			reg = <0x180000 0x400000>;
 		};
 
-		ubiconcat0: partition@600000 {
+		ubiconcat0: partition@580000 {
 			label = "ubiconcat0";
-			reg = <0x600000 0x1B80000>;
+			reg = <0x580000 0x1c00000>;
 		};
 
 		partition@2180000 {
