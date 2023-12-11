@@ -61,7 +61,7 @@
 
 		mesh_led: led-2 {
 			label = "green:mesh";
-			gpios = <&pio 15 GPIO_ACTIVE_LOW>;
+			gpios = <&pio 15 GPIO_ACTIVE_HIGH>;
 		};
 
 		led-3 {
@@ -77,9 +77,6 @@
 };
 
 &eth {
-	pinctrl-names = "default";
-	pinctrl-0 = <&mdio_pins>;
-
 	status = "okay";
 
 	gmac0: mac@0 {
@@ -87,8 +84,8 @@
 		reg = <0>;
 		phy-mode = "2500base-x";
 
-		nvmem-cells = <&macaddr_art_7c>;
-		nvmem-cell-names = "mac-address-ascii";
+		nvmem-cells = <&macaddr_art_7c 0>;
+		nvmem-cell-names = "mac-address";
 
 		fixed-link {
 			speed = <2500>;
@@ -103,13 +100,13 @@
 		phy-mode = "gmii";
 		phy-handle = <&int_gbe_phy>;
 
-		nvmem-cells = <&macaddr_art_7c>;
-		nvmem-cell-names = "mac-address-ascii";
+		nvmem-cells = <&macaddr_art_7c 0>;
+		nvmem-cell-names = "mac-address";
 	};
 };
 
 &mdio_bus {
-	switch: switch@0 {
+	switch: switch@1f {
 		compatible = "mediatek,mt7531";
 		reg = <31>;
 		reset-gpios = <&pio 39 GPIO_ACTIVE_HIGH>;
@@ -167,11 +164,16 @@
 				read-only;
 
 				compatible = "nvmem-cells";
-				#address-cells = <1>;
-				#size-cells = <1>;
+				nvmem-layout {
+					compatible = "fixed-layout";
+					#address-cells = <1>;
+					#size-cells = <1>;
 
-				macaddr_art_7c: macaddr@7c {
-					reg = <0x7c 0x11>;
+					macaddr_art_7c: macaddr@7c {
+						compatible = "mac-base";
+						reg = <0x7c 0x11>;
+						#nvmem-cell-cells = <1>;
+					};
 				};
 			};
 

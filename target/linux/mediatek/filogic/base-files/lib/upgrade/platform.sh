@@ -56,12 +56,14 @@ platform_do_upgrade() {
 		CI_ROOTPART="rootfs"
 		emmc_do_upgrade "$1"
 		;;
-	asus,tuf-ax4200)
+	asus,tuf-ax4200|\
+	asus,tuf-ax6000)
 		CI_UBIPART="UBI_DEV"
 		CI_KERNPART="linux"
 		nand_do_upgrade "$1"
 		;;
-	bananapi,bpi-r3)
+	bananapi,bpi-r3|\
+	bananapi,bpi-r3-mini)
 		local rootdev="$(cmdline_get_var root)"
 		rootdev="${rootdev##*/}"
 		rootdev="${rootdev%p[0-9]*}"
@@ -94,6 +96,7 @@ platform_do_upgrade() {
 		esac
 		;;
 	cmcc,rax3000m-emmc-ubootmod|\
+	glinet,gl-mt2500|\
 	glinet,gl-mt6000)
 		CI_KERNPART="kernel"
 		CI_ROOTPART="rootfs"
@@ -102,11 +105,9 @@ platform_do_upgrade() {
 	cudy,wr3000-v1)
 		default_do_upgrade "$1"
 		;;
-	mercusys,mr90x-v1)
-		CI_UBIPART="ubi0"
-		nand_do_upgrade "$1"
-		;;
 	h3c,magic-nx30-pro|\
+	jcg,q30|\
+	mediatek,mt7981-rfb|\
 	qihoo,360t7|\
 	tplink,tl-xdr4288|\
 	tplink,tl-xdr6086|\
@@ -116,10 +117,28 @@ platform_do_upgrade() {
 		CI_KERNPART="fit"
 		nand_do_upgrade "$1"
 		;;
+	jdcloud,re-cp-03)
+		CI_KERNPART="production"
+		emmc_do_upgrade "$1"
+		;;
+	mercusys,mr90x-v1)
+		CI_UBIPART="ubi0"
+		nand_do_upgrade "$1"
+		;;
+	ubnt,unifi-6-plus)
+		CI_KERNPART="kernel0"
+		EMMC_ROOT_DEV="$(cmdline_get_var root)"
+		emmc_do_upgrade "$1"
+		;;
 	xiaomi,mi-router-wr30u-stock|\
 	xiaomi,redmi-router-ax6000-stock)
 		CI_KERN_UBIPART=ubi_kernel
 		CI_ROOT_UBIPART=ubi
+		nand_do_upgrade "$1"
+		;;
+	zyxel,ex5601-t0-ubootmod)
+		CI_KERNPART="fit"
+		CI_ROOTPART="ubi_rootfs"
 		nand_do_upgrade "$1"
 		;;
 	*)
@@ -138,6 +157,7 @@ platform_check_image() {
 
 	case "$board" in
 	bananapi,bpi-r3|\
+	bananapi,bpi-r3-mini|\
 	cmcc,rax3000m)
 		[ "$magic" != "d00dfeed" ] && {
 			echo "Invalid image type."
@@ -156,17 +176,22 @@ platform_check_image() {
 
 platform_copy_config() {
 	case "$(board_name)" in
+	acer,predator-w6|\
+	cmcc,rax3000m-emmc-ubootmod|\
+	glinet,gl-mt2500|\
+	glinet,gl-mt6000|\
+	jdcloud,re-cp-03|\
+	ubnt,unifi-6-plus)
+		emmc_copy_config
+		;;
 	bananapi,bpi-r3|\
+	bananapi,bpi-r3-mini|\
 	cmcc,rax3000m)
 		case "$(cmdline_get_var root)" in
 		/dev/mmc*)
 			emmc_copy_config
 			;;
 		esac
-		;;
-	cmcc,rax3000m-emmc-ubootmod|\
-	glinet,gl-mt6000)
-		emmc_copy_config
 		;;
 	esac
 }
