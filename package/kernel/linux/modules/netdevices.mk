@@ -361,9 +361,9 @@ $(eval $(call KernelPackage,phy-smsc))
 define KernelPackage/phy-aquantia
   SUBMENU:=$(NETWORK_DEVICES_MENU)
   TITLE:=Aquantia Ethernet PHYs
-  DEPENDS:=+kmod-libphy +kmod-hwmon-core
+  DEPENDS:=+kmod-libphy +kmod-hwmon-core +kmod-lib-crc-ccitt
   KCONFIG:=CONFIG_AQUANTIA_PHY
-  FILES:=$(LINUX_DIR)/drivers/net/phy/aquantia.ko
+  FILES:=$(LINUX_DIR)/drivers/net/phy/aquantia/aquantia.ko
   AUTOLOAD:=$(call AutoLoad,18,aquantia,1)
 endef
 
@@ -913,8 +913,11 @@ $(eval $(call KernelPackage,iavf))
 define KernelPackage/ice
   SUBMENU:=$(NETWORK_DEVICES_MENU)
   TITLE:=Intel(R) Ethernet Controller E810 Series support
-  DEPENDS:=@PCI_SUPPORT +kmod-ptp
-  KCONFIG:=CONFIG_ICE
+  DEPENDS:=@PCI_SUPPORT +kmod-ptp @!TARGET_apm821xx
+  KCONFIG:=\
+	CONFIG_ICE \
+	CONFIG_ICE_HWTS=y \
+	CONFIG_ICE_SWITCHDEV=y
   FILES:=$(LINUX_DIR)/drivers/net/ethernet/intel/ice/ice.ko
   AUTOLOAD:=$(call AutoProbe,ice)
 endef
