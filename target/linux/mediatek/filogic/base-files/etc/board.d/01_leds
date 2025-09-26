@@ -28,6 +28,10 @@ cudy,re3000-v1)
 cudy,wr3000-v1)
 	ucidef_set_led_netdev "wan" "wan" "blue:wan" "wan"
 	;;
+huasifei,wh3000-emmc)
+	ucidef_set_led_netdev "wan" "WAN" "red:wan" "eth1"
+	ucidef_set_led_netdev "wlan" "WLAN" "white:wlan" "phy1-ap0"
+	;;
 imou,lc-hx3001|\
 imou,lc-hx3001-ubootmod|\
 nokia,ea0326gmp)
@@ -46,6 +50,9 @@ mercusys,mr90x-v1)
 	ucidef_set_led_netdev "lan1" "lan2" "green:lan1" "lan1" "link tx rx"
 	ucidef_set_led_netdev "lan2" "lan2" "green:lan2" "lan2" "link tx rx"
 	ucidef_set_led_netdev "wan" "wan" "green:wan" "eth1" "link tx rx"
+	;;
+netcore,n60-pro)
+	ucidef_set_led_netdev "wan" "WAN" "blue:wan" "eth1" "link"
 	;;
 netgear,wax220)
 	ucidef_set_led_netdev "eth0" "LAN" "green:lan" "eth0"

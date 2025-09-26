@@ -13,6 +13,7 @@ mediatek_setup_interfaces()
 	cmcc,rax3000m|\
 	cmcc,rax3000m-emmc-ubootmod|\
 	cmcc,rax3000m-nand-ubootmod|\
+	cmcc,rax3000me|\
 	h3c,magic-nx30-pro|\
 	h3c,magic-nx30-pro-nmbm|\
 	imou,lc-hx3001|\
@@ -32,8 +33,11 @@ mediatek_setup_interfaces()
 	cetron,ct3003-stock|\
 	cetron,ct3003-ubootmod|\
 	cmcc,a10|\
+	cmcc,a10-stock|\
 	cmcc,a10-ubootmod|\
 	confiabits,mt7981|\
+	creatlentem,clt-r30b1|\
+	creatlentem,clt-r30b1-112m|\
 	cudy,wr3000-v1|\
 	jcg,q30|\
 	jcg,q30-ubootmod|\
@@ -48,6 +52,8 @@ mediatek_setup_interfaces()
 	jdcloud,re-cp-03|\
 	mediatek,mt7981-rfb|\
 	netcore,n60|\
+	netcore,n60-pro|\
+	ruijie,rg-x60-pro|\
 	unielec,u7981-01*|\
 	zbtlink,zbt-z8102ax|\
 	zyxel,ex5601-t0-stock|\
@@ -68,6 +74,7 @@ mediatek_setup_interfaces()
 		;;
 	cudy,m3000-v1|\
 	cudy,tr3000-v1|\
+	cudy,tr3000-v1-ubootmod|\
 	glinet,gl-mt2500|\
 	glinet,gl-mt3000)
 		ucidef_set_interfaces_lan_wan eth1 eth0
@@ -80,6 +87,9 @@ mediatek_setup_interfaces()
 	tplink,tl-xdr6088|\
 	tplink,tl-xtr8488)
 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4 lan5" eth1
+		;;
+	huasifei,wh3000-emmc)
+		ucidef_set_interfaces_lan_wan eth0 eth1
 		;;
 	mediatek,mt7986a-rfb)
 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4 lan6" "eth1 wan"
@@ -180,6 +190,10 @@ mediatek_setup_macs()
 		lan_mac=$(macaddr_add "$wan_mac" 1)
 		label_mac=$wan_mac
 		;;
+	huasifei,wh3000-emmc)
+		lan_mac="$(macaddr_add "$(mmc_get_mac_binary factory 0x4)" 2)"
+		wan_mac="$(macaddr_add "$lan_mac" 1)"
+		;;
 	imou,lc-hx3001-ubootmod)
 		lan_mac=$(mtd_get_mac_ascii u-boot-env mac)
 		[ -z "$lan_mac" ] || wan_mac=$(macaddr_add $lan_mac 2)
@@ -201,6 +215,11 @@ mediatek_setup_macs()
 		lan_mac=$(mtd_get_mac_ascii factory lanMac)
 		wan_mac=$(macaddr_add "$lan_mac" 1)
 		label_mac=$wan_mac
+		;;
+	ruijie,rg-x60-pro)
+		label_mac=$(mtd_get_mac_ascii product_info ethaddr)
+		wan_mac=$label_mac
+		lan_mac=$(macaddr_add "$label_mac" 1)
 		;;
 	smartrg,sdg-8612|\
 	smartrg,sdg-8614|\

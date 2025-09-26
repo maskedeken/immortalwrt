@@ -1646,6 +1646,21 @@ define Device/huawei_ap5030dn
 endef
 TARGET_DEVICES += huawei_ap5030dn
 
+define Device/huawei_ap6010dn
+  SOC := ar9344
+  DEVICE_VENDOR := Huawei
+  DEVICE_MODEL := AP6010DN
+  LOADER_TYPE := bin
+  LOADER_FLASH_OFFS := 0x111DC0
+  KERNEL_SIZE := 15360k
+  IMAGE_SIZE := 30720k
+  COMPILE := loader-$(1).bin
+  COMPILE/loader-$(1).bin := loader-okli-compile | pad-to 64k | uImage none
+  KERNEL := kernel-bin | append-dtb | lzma | uImage lzma -M 0x4f4b4c49 | loader-okli $(1) 8128
+  KERNEL_INITRAMFS := kernel-bin | append-dtb | lzma | loader-kernel | uImage none
+endef
+TARGET_DEVICES += huawei_ap6010dn
+
 define Device/iodata_etg3-r
   SOC := ar9342
   DEVICE_VENDOR := I-O DATA
@@ -2737,6 +2752,14 @@ define Device/sophos_ap15
 endef
 TARGET_DEVICES += sophos_ap15
 
+define Device/sophos_ap15c
+  SOC := qca9557
+  DEVICE_VENDOR := Sophos
+  DEVICE_MODEL := AP15C
+  IMAGE_SIZE := 15936k
+endef
+TARGET_DEVICES += sophos_ap15c
+
 define Device/sophos_ap55
   SOC := qca9558
   DEVICE_VENDOR := Sophos
@@ -3076,6 +3099,15 @@ define Device/zbtlink_zbt-wd323
 	kmod-usb-serial-cp210x uqmi
 endef
 TARGET_DEVICES += zbtlink_zbt-wd323
+
+define Device/zte_e8820
+  SOC := qca9563
+  DEVICE_VENDOR := ZTE
+  DEVICE_MODEL := E8820
+  IMAGE_SIZE := 16000k
+  DEVICE_PACKAGES := kmod-usb2 kmod-usb-ledtrig-usbport kmod-ath10k-ct-smallbuffers ath10k-firmware-qca988x-ct
+endef
+TARGET_DEVICES += zte_e8820
 
 define Device/zyxel_nwa11xx
   $(Device/loader-okli-uimage)
